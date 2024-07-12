@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux';
 import { ImPhone, ImUser } from 'react-icons/im';
 import { MdOutlineClear as DeleteContactBtn } from 'react-icons/md';
 import { deleteContact } from 'redux/contactsSlice';
-import { ContactCard, StyledIconBtn } from './ContactItem.styled';
+import { ContactCard, ContactInfo, StyledIconBtn } from './ContactItem.styled';
 
 const ContactItem = ({ contact: { id, name, number } }) => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const ContactItem = ({ contact: { id, name, number } }) => {
 
   return (
     <ContactCard>
-      <ul>
+      <ContactInfo>
         <li>
           <ImUser />
           <span>{name}</span>
@@ -22,7 +22,7 @@ const ContactItem = ({ contact: { id, name, number } }) => {
           <ImPhone />
           <span>{number}</span>
         </li>
-      </ul>
+      </ContactInfo>
 
       <StyledIconBtn
         type="button"

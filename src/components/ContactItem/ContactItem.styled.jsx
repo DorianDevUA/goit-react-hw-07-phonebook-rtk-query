@@ -7,11 +7,15 @@ export const ContactCard = styled.div`
   align-items: center;
 `;
 
-export const ContactInfo = styled.ul``;
+export const ContactInfo = styled.ul`
+  padding: 0;
+  list-style: none;
+`;
 
 export const ContactName = styled.li``;
 
 export const StyledIconBtn = styled(IconButton)`
+  padding: 0;
   background-color: inherit;
 
   border: none;

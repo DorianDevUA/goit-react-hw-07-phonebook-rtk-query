@@ -7,6 +7,7 @@ export const StyledList = styled.ul`
   gap: 4px;
   width: 100%;
   max-width: 1024px;
+  list-style: none;
 `;
 
 export const Contact = styled.li`

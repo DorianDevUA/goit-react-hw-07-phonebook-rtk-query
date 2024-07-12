@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import STATUS from 'services/state-machine';
 
 const initialState = {
   contacts: [],
-  isLoading: false,
+  status: STATUS.IDLE,
   error: null,
 };
 
@@ -13,7 +14,7 @@ const contactsSlice = createSlice({
     fetchingInProgress: state => {
       return {
         ...state,
-        isLoading: true,
+        status: STATUS.PENDING,
       };
     },
     fetchingSuccess: (state, { payload }) => {
@@ -21,14 +22,14 @@ const contactsSlice = createSlice({
         ...state,
         contacts: payload,
         error: null,
-        isLoading: false,
+        status: STATUS.FULFILLD,
       };
     },
     fetchingError: (state, { payload }) => {
       return {
         ...state,
         error: payload,
-        isLoading: false,
+        status: STATUS.REJECTED,
       };
     },
     deleteContact: (state, { payload }) => {

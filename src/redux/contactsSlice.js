@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import STATUS from 'services/state-machine';
+import { fetchAllContactsThunk } from './operationsThunk';
 
 const initialState = {
   contacts: [],
@@ -11,27 +12,6 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
   reducers: {
-    fetchingInProgress: state => {
-      return {
-        ...state,
-        status: STATUS.PENDING,
-      };
-    },
-    fetchingSuccess: (state, { payload }) => {
-      return {
-        ...state,
-        contacts: payload,
-        error: null,
-        status: STATUS.FULFILLD,
-      };
-    },
-    fetchingError: (state, { payload }) => {
-      return {
-        ...state,
-        error: payload,
-        status: STATUS.REJECTED,
-      };
-    },
     deleteContact: (state, { payload }) => {
       return {
         ...state,
@@ -39,39 +19,34 @@ const contactsSlice = createSlice({
       };
     },
   },
+  // Додаємо обробку зовнішніх екшенів
+  extraReducers: builder => {
+    builder
+      .addCase(fetchAllContactsThunk.pending, state => {
+        return {
+          ...state,
+          status: STATUS.PENDING,
+        };
+      })
+      .addCase(fetchAllContactsThunk.fulfilled, (state, { payload }) => {
+        return {
+          ...state,
+          contacts: payload,
+          error: null,
+          status: STATUS.FULFILLD,
+        };
+      })
+      .addCase(fetchAllContactsThunk.rejected, (state, { payload }) => {
+        return {
+          ...state,
+          error: payload,
+          status: STATUS.REJECTED,
+        };
+      });
+  },
 });
 
-// With immer
-// const contactsSlice = createSlice({
-//   name: 'contacts',
-//   initialState,
-//   reducers: {
-//     fetchingInProgress: state => {
-//       state.isLoading = true;
-//     },
-//     fetchingSuccess: (state, { payload }) => {
-//       state.contacts = payload;
-//       state.isLoading = false;
-//       state.error = null;
-//     },
-//     fetchingError: (state, { payload }) => {
-//       state.error = payload;
-//       state.isLoading = false;
-//     },
-//     deleteContact: (state, { payload }) => {
-//       state.contacts = state.contacts.filter(
-//         contact => contact.id !== payload.id,
-//       );
-//     },
-//   },
-// });
-
-export const {
-  fetchingInProgress,
-  fetchingSuccess,
-  fetchingError,
-  deleteContact,
-} = contactsSlice.actions;
+export const { deleteContact } = contactsSlice.actions;
 
 // Selectors
 export const getContactBook = state => state.contactBook;

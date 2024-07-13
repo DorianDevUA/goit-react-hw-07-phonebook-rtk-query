@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllContacts } from 'redux/operations';
+import { fetchAllContactsThunk } from 'redux/operationsThunk';
 import { getContactBook } from 'redux/contactsSlice';
 import STATUS from 'services/state-machine';
 import ContactFilter from 'components/ContactFilter';
@@ -11,7 +11,7 @@ const ContactsBookPage = () => {
   const { status, contacts, error } = useSelector(getContactBook);
 
   useEffect(() => {
-    dispatch(fetchAllContacts());
+    dispatch(fetchAllContactsThunk());
   }, [dispatch]);
 
   const isLoading = status === STATUS.PENDING;
@@ -24,7 +24,7 @@ const ContactsBookPage = () => {
       <ContactFilter />
       {isLoading && <div>Loading...</div>}
       {isContactsExist && <ContactList />}
-      {isError && <div>Помилка завантаження контактів!</div>}
+      {isError && <div>{error.message}</div>}
     </>
   );
 };

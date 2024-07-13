@@ -75,5 +75,8 @@ export const {
 
 // Selectors
 export const getContactBook = state => state.contactBook;
+export const getContacts = state => state.contactBook.contacts;
+export const getContactsStatus = state => state.contactBook.status;
+export const getContactsError = state => state.contactBook.error;
 
 export const contactsReducer = contactsSlice.reducer;

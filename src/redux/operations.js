@@ -17,7 +17,8 @@ export const fetchAllContacts = () => async dispatch => {
   }
 };
 
-// export const fetchAllComtacts = async () => {
+// Звичайний асинхронний запит на бекенд
+// export const fetchAllContacts = async () => {
 //   return response = await axios.get('/contacts');
 //   return response.data;
 // }

@@ -3,6 +3,6 @@ import { contactsReducer } from './contactsSlice';
 import { contactFilterReducer } from './contactFilterSlice';
 
 export const rootReducer = combineReducers({
-  contactBook: contactsReducer,
+  contacts: contactsReducer,
   filter: contactFilterReducer,
 });

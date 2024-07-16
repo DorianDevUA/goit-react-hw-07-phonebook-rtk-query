@@ -10,9 +10,6 @@ const SharedLayout = () => {
               <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <NavLink to="tasks">Task Manager</NavLink>
-            </li>
-            <li>
               <NavLink to="contacts">PhoneBook</NavLink>
             </li>
           </ul>

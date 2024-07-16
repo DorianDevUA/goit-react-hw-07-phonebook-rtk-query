@@ -1,57 +1,42 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import * as contactsHandlers from './contactsHandlers';
+import * as contactsThunks from './operations';
 import STATUS from 'services/state-machine';
-import { fetchAllContactsThunk } from './operationsThunk';
 
-const initialState = {
-  contacts: [],
-  status: STATUS.IDLE,
-  error: null,
-};
+const {
+  handlePending,
+  handleRejected,
+  handleFulfilled,
+  handleFulfilledFetchAll,
+  handleFulfilledAddContact,
+  handleFulfilledDeleteContact,
+} = contactsHandlers;
+
+const {
+  THUNK_STATUS,
+  fetchContactsThunk,
+  addContactThunk,
+  deleteContactThunk,
+  getThunksWithStatus,
+} = contactsThunks;
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState,
-  reducers: {
-    deleteContact: (state, { payload }) => {
-      return {
-        ...state,
-        contacts: state.contacts.filter(contact => contact.id !== payload.id),
-      };
-    },
+  initialState: {
+    items: [],
+    status: STATUS.IDLE,
+    error: null,
   },
-  // Додаємо обробку зовнішніх екшенів
   extraReducers: builder => {
+    const { PENDING, FULFILLED, REJECTED } = THUNK_STATUS;
     builder
-      .addCase(fetchAllContactsThunk.pending, state => {
-        return {
-          ...state,
-          status: STATUS.PENDING,
-        };
-      })
-      .addCase(fetchAllContactsThunk.fulfilled, (state, { payload }) => {
-        return {
-          ...state,
-          contacts: payload,
-          error: null,
-          status: STATUS.FULFILLD,
-        };
-      })
-      .addCase(fetchAllContactsThunk.rejected, (state, { payload }) => {
-        return {
-          ...state,
-          error: payload,
-          status: STATUS.REJECTED,
-        };
-      });
+      .addCase(fetchContactsThunk.fulfilled, handleFulfilledFetchAll)
+      .addCase(addContactThunk.fulfilled, handleFulfilledAddContact)
+      .addCase(deleteContactThunk.fulfilled, handleFulfilledDeleteContact)
+      .addMatcher(isAnyOf(...getThunksWithStatus(PENDING)), handlePending)
+      .addMatcher(isAnyOf(...getThunksWithStatus(FULFILLED)), handleFulfilled)
+      .addMatcher(isAnyOf(...getThunksWithStatus(REJECTED)), handleRejected);
   },
 });
-
-export const { deleteContact } = contactsSlice.actions;
-
-// Selectors
-export const getContactBook = state => state.contactBook;
-export const getContacts = state => state.contactBook.contacts;
-export const getContactsStatus = state => state.contactBook.status;
-export const getContactsError = state => state.contactBook.error;
 
 export const contactsReducer = contactsSlice.reducer;

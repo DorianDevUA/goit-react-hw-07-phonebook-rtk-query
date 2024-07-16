@@ -1,11 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import SharedLayout from 'components/SharedLayout';
 import HomePage from 'pages/HomePage';
-import TasksPage from 'pages/TasksPage';
-import TaskDetailsPage from 'pages/TaskDetailsPage';
-import CreateTaskPage from 'pages/CreateTaskPage';
-import ContactBookPage from 'pages/ContactBookPage';
+import ContactBookPage from 'pages/PhonebookPage';
 import ContactDetailsPage from 'pages/ContactDetailsPage';
+import CreateContactPage from 'pages/CreateContactPage';
 
 const App = () => {
   return (
@@ -13,11 +11,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="tasks" element={<TasksPage />} />
-          <Route path="tasks/:Id" element={<TaskDetailsPage />} />
-          <Route path="tasks/create" element={<CreateTaskPage />} />
           <Route path="contacts" element={<ContactBookPage />} />
           <Route path="contacts/:name" element={<ContactDetailsPage />} />
+          <Route path="contacts/create" element={<CreateContactPage />} />
         </Route>
       </Routes>
     </>

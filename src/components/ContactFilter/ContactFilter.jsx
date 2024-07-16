@@ -4,8 +4,8 @@ import { changeContactFilter } from 'redux/contactFilterSlice';
 const ContactFilter = () => {
   const dispatch = useDispatch();
 
-  const handleChange = evt => {
-    const value = evt.target.value;
+  const handleChange = ({ target: { value } }) => {
+    // const value = evt.target.value;
     dispatch(changeContactFilter({ value }));
   };
 

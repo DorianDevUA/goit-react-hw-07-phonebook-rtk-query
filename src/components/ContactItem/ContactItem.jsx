@@ -1,14 +1,14 @@
 import { useDispatch } from 'react-redux';
 import { ImPhone, ImUser } from 'react-icons/im';
 import { MdOutlineClear as DeleteContactBtn } from 'react-icons/md';
-import { deleteContact } from 'redux/contactsSlice';
+import { deleteContactThunk } from 'redux/operations';
 import { ContactCard, ContactInfo, StyledIconBtn } from './ContactItem.styled';
 
 const ContactItem = ({ contact: { id, name, number } }) => {
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteContact({ id }));
+    dispatch(deleteContactThunk(id));
   };
 
   return (

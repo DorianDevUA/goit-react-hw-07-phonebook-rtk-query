@@ -1,24 +1,33 @@
-import axios from 'axios';
-import {
-  fetchingError,
-  fetchingInProgress,
-  fetchingSuccess,
-} from './contactsSlice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { addContact, deleteContact, fetchAllContacts } from 'services/mockapi';
 
-axios.defaults.baseURL = 'https://669013f3c0a7969efd9ae577.mockapi.io/api/v1';
-
-export const fetchAllContacts = () => async dispatch => {
-  try {
-    dispatch(fetchingInProgress());
-    const response = await axios.get('/contacts');
-    dispatch(fetchingSuccess(response.data));
-  } catch (error) {
-    dispatch(fetchingError(error));
-  }
+export const THUNK_STATUS = {
+  PENDING: 'pending',
+  FULFILLED: 'fulfilled',
+  REJECTED: 'rejected',
 };
 
-// Звичайний асинхронний запит на бекенд
-// export const fetchAllContacts = async () => {
-//   return response = await axios.get('/contacts');
-//   return response.data;
-// }
+export const getThunksWithStatus = status => {
+  return arrThunk.map(thunk => thunk[status]);
+};
+
+export const fetchContactsThunk = createAsyncThunk(
+  'contacts/fetchAll',
+  fetchAllContacts,
+);
+
+export const addContactThunk = createAsyncThunk(
+  'contacts/addContact',
+  addContact,
+);
+
+export const deleteContactThunk = createAsyncThunk(
+  'contacts/deleteContact',
+  deleteContact,
+);
+
+export const arrThunk = [
+  addContactThunk,
+  deleteContactThunk,
+  fetchContactsThunk,
+];

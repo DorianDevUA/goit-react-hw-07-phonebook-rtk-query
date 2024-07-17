@@ -1,11 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import { Field, Form, Formik } from 'formik';
+import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
 import { nanoid } from 'nanoid';
 import FormError from 'components/FormError';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContactThunk } from 'redux/operations';
 import { selectContacts } from 'redux/selectors';
+import {
+  LabelTitle,
+  StyledButton,
+  StyledForm,
+  StyledLabel,
+} from './ContactForm.styled';
 
 const initialValues = { name: '', number: '' };
 
@@ -60,19 +66,19 @@ const ContactForm = () => {
       validationSchema={schema}
       onSubmit={handleSubmit}
     >
-      <Form>
-        <label htmlFor={nameInputId}>
-          <span>Name</span>
+      <StyledForm>
+        <StyledLabel htmlFor={nameInputId}>
+          <LabelTitle>Name</LabelTitle>
           <Field type="text" name="name" id={nameInputId} />
           <FormError name="name" />
-        </label>
-        <label htmlFor={numberInputId}>
-          <span>Number</span>
+        </StyledLabel>
+        <StyledLabel htmlFor={numberInputId}>
+          <LabelTitle>Number</LabelTitle>
           <Field type="tel" name="number" id={numberInputId} />
           <FormError name="number" />
-        </label>
-        <button type="submit">Add contact</button>
-      </Form>
+        </StyledLabel>
+        <StyledButton type="submit">Add contact</StyledButton>
+      </StyledForm>
     </Formik>
   );
 };

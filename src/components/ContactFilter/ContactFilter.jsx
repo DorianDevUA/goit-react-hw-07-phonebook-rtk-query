@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { changeContactFilter } from 'redux/contactFilterSlice';
+import { LabelTitle } from './ContactFilter.styled';
 
 const ContactFilter = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const ContactFilter = () => {
 
   return (
     <label>
-      <span>Find contacts by name:</span>
+      <LabelTitle>Find contacts by name:</LabelTitle>
       <input
         type="search"
         name="contactFilter"

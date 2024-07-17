@@ -26,8 +26,4 @@ export const deleteContactThunk = createAsyncThunk(
   deleteContact,
 );
 
-export const arrThunk = [
-  addContactThunk,
-  deleteContactThunk,
-  fetchContactsThunk,
-];
+const arrThunk = [addContactThunk, deleteContactThunk, fetchContactsThunk];

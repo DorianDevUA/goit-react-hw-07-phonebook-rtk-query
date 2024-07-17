@@ -7,7 +7,6 @@ import ContactFilter from 'components/ContactFilter';
 import ContactList from 'components/ContactList';
 import LinkButton from 'components/LinkButton';
 import { ImUserPlus } from 'react-icons/im';
-import { Container } from './PhonebookPage.styled';
 
 const PhonebookPage = () => {
   const dispatch = useDispatch();
@@ -17,13 +16,13 @@ const PhonebookPage = () => {
     dispatch(fetchContactsThunk());
   }, [dispatch]);
 
-  const isLoading = status === STATUS.PENDING;
+  // const isLoading = status === STATUS.PENDING;
   const isContactsExist = contacts.length > 0 && status === STATUS.FULFILLD;
   const isError = status === STATUS.REJECTED;
 
   return (
-    <Container>
-      <div>PhonebookPage</div>
+    <>
+      <h1>Phonebook</h1>
       <LinkButton
         to="create"
         title="Add new contact"
@@ -32,10 +31,11 @@ const PhonebookPage = () => {
         <ImUserPlus />
       </LinkButton>
       <ContactFilter />
-      {isLoading && <div>Loading...</div>}
+      <h2>Contacts</h2>
+      {/* {isLoading && <div>Loading...</div>} */}
       {isContactsExist && <ContactList />}
       {isError && <div>{error.message}</div>}
-    </Container>
+    </>
   );
 };
 

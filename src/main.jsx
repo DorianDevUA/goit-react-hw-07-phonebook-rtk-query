@@ -11,7 +11,7 @@ import App from 'components/App';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/goit-react-hw-07-phonebook">
+    <BrowserRouter basename="/goit-react-hw-07-phonebook-rtk-query">
       <Provider store={store}>
         <GlobalStyle />
         <App />

@@ -9,11 +9,3 @@ export const StyledList = styled.ul`
   max-width: 1024px;
   list-style: none;
 `;
-
-export const Contact = styled.li`
-  padding: 8px;
-  border: 1px solid black;
-  border-radius: 2px;
-  min-width: 250px;
-  max-width: 335px;
-`;

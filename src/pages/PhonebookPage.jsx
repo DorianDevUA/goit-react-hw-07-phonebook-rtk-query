@@ -1,24 +1,21 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchContactsThunk } from 'redux/operations';
-import { selectPhonebook } from 'redux/selectors';
-import STATUS from 'services/state-machine';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useGetAllContactsQuery } from 'redux/mockApi';
+import { selectContactFilter } from 'redux/contactFilterSlice';
+import { getFilteredContactsByName } from 'utils/getFilteredContacts';
 import ContactFilter from 'components/ContactFilter';
 import ContactList from 'components/ContactList';
 import LinkButton from 'components/LinkButton';
 import { ImUserPlus } from 'react-icons/im';
 
 const PhonebookPage = () => {
-  const dispatch = useDispatch();
-  const { status, items: contacts, error } = useSelector(selectPhonebook);
+  const { data: contacts } = useGetAllContactsQuery();
+  const filter = useSelector(selectContactFilter);
 
-  useEffect(() => {
-    dispatch(fetchContactsThunk());
-  }, [dispatch]);
-
-  // const isLoading = status === STATUS.PENDING;
-  const isContactsExist = contacts.length > 0 && status === STATUS.FULFILLD;
-  const isError = status === STATUS.REJECTED;
+  const filtredContacts = useMemo(
+    () => getFilteredContactsByName(contacts, filter),
+    [filter, contacts],
+  );
 
   return (
     <>
@@ -31,10 +28,9 @@ const PhonebookPage = () => {
         <ImUserPlus />
       </LinkButton>
       <ContactFilter />
+
       <h2>Contacts</h2>
-      {/* {isLoading && <div>Loading...</div>} */}
-      {isContactsExist && <ContactList />}
-      {isError && <div>{error.message}</div>}
+      {contacts && <ContactList contacts={filtredContacts} />}
     </>
   );
 };

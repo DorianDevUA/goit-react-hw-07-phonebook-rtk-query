@@ -12,9 +12,6 @@ const SharedLayout = () => {
             <li>
               <NavLink to="contacts">PhoneBook</NavLink>
             </li>
-            <li>
-              <NavLink to="rtkquery">RTK Query</NavLink>
-            </li>
           </ul>
         </nav>
       </header>

@@ -1,6 +1,14 @@
 import styled from 'styled-components';
 import IconButton from 'components/IconButton';
 
+export const StyledListItem = styled.li`
+  padding: 8px;
+  border: 1px solid black;
+  border-radius: 2px;
+  min-width: 250px;
+  max-width: 335px;
+`;
+
 export const ContactCard = styled.div`
   display: flex;
   justify-content: space-between;

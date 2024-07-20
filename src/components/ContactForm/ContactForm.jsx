@@ -1,17 +1,18 @@
-import { useNavigate } from 'react-router-dom';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { nanoid } from 'nanoid';
 import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
-import { nanoid } from 'nanoid';
+// import { useNavigate } from 'react-router-dom';
+import { useAddContactMutation, useGetAllContactsQuery } from 'redux/mockApi';
+import { isContactNameExist } from 'utils/isContactNameExist';
 import FormError from 'components/FormError';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContactThunk } from 'redux/operations';
-import { selectContacts } from 'redux/selectors';
 import {
   LabelTitle,
   StyledButton,
   StyledForm,
   StyledLabel,
 } from './ContactForm.styled';
+import { Navigate } from 'react-router-dom';
 
 const initialValues = { name: '', number: '' };
 
@@ -29,18 +30,12 @@ const schema = Yup.object().shape({
 });
 
 const ContactForm = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const contacts = useSelector(selectContacts);
+  // const navigate = useNavigate();
+  const { data: contacts } = useGetAllContactsQuery();
+  const [addContact, { isSuccess }] = useAddContactMutation();
 
   const nameInputId = nanoid();
   const numberInputId = nanoid();
-
-  const checkNameInContacts = name => {
-    const normalizedName = name.toLowerCase();
-
-    return contacts.some(({ name }) => name.toLowerCase() === normalizedName);
-  };
 
   const handleSubmit = (values, actions) => {
     // console.log('FormValues:', values);
@@ -48,38 +43,42 @@ const ContactForm = () => {
     const { name, number } = values;
     const { resetForm } = actions;
 
-    const isNameExist = checkNameInContacts(name);
+    const contactExists = isContactNameExist(contacts, name);
 
-    if (isNameExist) {
-      alert(`Контакт "${name}" вже існує!`);
+    if (contactExists) {
+      Notify.failure(`Контакт ${name.trim()} вже існує!`);
       return;
     }
 
-    dispatch(addContactThunk({ name, number }));
+    addContact({ name, number });
+    Notify.success(`Новий контакт: ${name.trim()}!`);
     resetForm();
-    navigate('/contacts');
+    // navigate('/contacts');
   };
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={schema}
-      onSubmit={handleSubmit}
-    >
-      <StyledForm>
-        <StyledLabel htmlFor={nameInputId}>
-          <LabelTitle>Name</LabelTitle>
-          <Field type="text" name="name" id={nameInputId} />
-          <FormError name="name" />
-        </StyledLabel>
-        <StyledLabel htmlFor={numberInputId}>
-          <LabelTitle>Number</LabelTitle>
-          <Field type="tel" name="number" id={numberInputId} />
-          <FormError name="number" />
-        </StyledLabel>
-        <StyledButton type="submit">Add contact</StyledButton>
-      </StyledForm>
-    </Formik>
+    <>
+      {isSuccess && <Navigate to="/contacts" />}
+      <Formik
+        initialValues={initialValues}
+        validationSchema={schema}
+        onSubmit={handleSubmit}
+      >
+        <StyledForm>
+          <StyledLabel htmlFor={nameInputId}>
+            <LabelTitle>Name</LabelTitle>
+            <Field type="text" name="name" id={nameInputId} />
+            <FormError name="name" />
+          </StyledLabel>
+          <StyledLabel htmlFor={numberInputId}>
+            <LabelTitle>Number</LabelTitle>
+            <Field type="tel" name="number" id={numberInputId} />
+            <FormError name="number" />
+          </StyledLabel>
+          <StyledButton type="submit">Add contact</StyledButton>
+        </StyledForm>
+      </Formik>
+    </>
   );
 };
 

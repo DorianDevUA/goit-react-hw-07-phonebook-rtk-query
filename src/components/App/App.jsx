@@ -4,7 +4,6 @@ import HomePage from 'pages/HomePage';
 import PhonebookPage from 'pages/PhonebookPage';
 import ContactDetailsPage from 'pages/ContactDetailsPage';
 import CreateContactPage from 'pages/CreateContactPage';
-import RTKQuery from 'pages/RTKQuery';
 
 const App = () => {
   return (
@@ -12,7 +11,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<SharedLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="rtkquery" element={<RTKQuery />} />
           <Route path="contacts" element={<PhonebookPage />} />
           <Route path="contacts/:name" element={<ContactDetailsPage />} />
           <Route path="contacts/create" element={<CreateContactPage />} />
